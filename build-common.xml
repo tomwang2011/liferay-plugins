@@ -1198,6 +1198,11 @@ Please find a solution that does not require portal-impl.jar.
 			<if>
 				<available file="@{module.dir}/test/@{test.type}" type="dir" />
 				<then>
+					<setup-test-classpath
+						module.dir="@{module.dir}"
+						test.type="@{test.type}"
+					/>
+
 					<mkdir dir="@{module.dir}/coverage-reports/@{test.type}" />
 					<mkdir dir="@{module.dir}/test-classes/@{test.type}" />
 					<mkdir dir="@{module.dir}/test-coverage/@{test.type}" />
@@ -1207,39 +1212,6 @@ Please find a solution that does not require portal-impl.jar.
 						<fileset dir="@{module.dir}/test" includes="*.properties" />
 						<fileset dir="@{module.dir}/test/@{test.type}" includes="**/*.bnd,**/*.png,**/*.policy,**/*.properties,**/*.xml,**/dependencies/**" />
 					</copy>
-
-					<ivy:settings file="${ivy.custom.settings.file}" />
-
-					<ivy:resolve
-						conf="test"
-						file="${sdk.dir}/ivy.xml"
-						log="${ivy.log.level}"
-						transitive="${ivy.resolve.transitive.dependencies.test}"
-					/>
-
-					<if>
-						<available file="@{module.dir}/ivy.xml" />
-						<then>
-							<ivy:resolve
-								conf="test"
-								file="@{module.dir}/ivy.xml"
-								log="${ivy.log.level}"
-								transitive="${ivy.resolve.transitive.dependencies.test}"
-							/>
-						</then>
-					</if>
-
-					<path id="plugin-test-type.classpath">
-						<pathelement location="@{module.dir}/test-classes/@{test.type}" />
-
-						<!-- SDK dependencies -->
-
-						<ivy:resources module="com.liferay.sdk" type="bundle,jar,orbit" />
-
-						<!-- Module dependencies -->
-
-						<ivy:resources type="bundle,jar,orbit" />
-					</path>
 
 					<compile-java
 						javac.classpathref="test.classpath"
@@ -2242,6 +2214,73 @@ Please find a solution that does not require portal-impl.jar.
 		</sequential>
 	</macrodef>
 
+	<macrodef name="junit-cmd">
+		<attribute name="junit.forkmode" />
+		<attribute name="module.dir" />
+		<attribute name="test.class" />
+		<attribute name="test.type" />
+
+		<sequential>
+			<local name="junit.java.gc" />
+
+			<if>
+				<equals arg1="@{test.type}" arg2="unit" />
+				<then>
+					<if>
+						<equals arg1="${junit.java.unit.gc.logging}" arg2="on" />
+						<then>
+							<property name="junit.java.gc" value="${junit.java.unit.gc} -verbose:gc -XX:+PrintGCCause -XX:+PrintGCDetails" />
+						</then>
+						<else>
+							<property name="junit.java.gc" value="${junit.java.unit.gc}" />
+						</else>
+					</if>
+				</then>
+				<else>
+					<local name="project.dir.name" />
+
+					<basename property="module.dir.name" file="@{module.dir}" />
+
+					<property name="junit.java.gc" value="${junit.java.integration.gc} -verbose:gc -Xloggc:/tmp/${module.dir.name}-@{test.type}-gc.log -XX:+PrintGCCause -XX:+PrintGCDetails" />
+				</else>
+			</if>
+
+			<instrument-code
+				module.dir="@{module.dir}"
+				test.type="@{test.type}"
+			/>
+
+			<junit dir="@{module.dir}" fork="on" forkmode="@{junit.forkmode}" jvm="${junit.jvm}" outputtoformatters="false" printsummary="on" showoutput="true">
+				<sysproperty key="app.server.tomcat.dir" value="${app.server.tomcat.dir}" />
+				<sysproperty key="net.sourceforge.cobertura.datafile" file="@{module.dir}/test-coverage/@{test.type}/cobertura.ser" />
+				<sysproperty key="whip.agent" file="${whip.agent}" />
+				<sysproperty key="whip.datafile" file="@{module.dir}/test-coverage/whip.dat" />
+				<sysproperty key="whip.instrument.dump" value="${whip.instrument.dump}" />
+				<jvmarg line="${junit.debug.jpda}" />
+				<jvmarg line="${junit.java.gc}" />
+				<jvmarg line="${whip.agent}" />
+				<jvmarg value="-Dexternal-properties=${test.properties}" />
+				<jvmarg value="-Dfile.encoding=UTF-8" />
+				<jvmarg value="-Djava.net.preferIPv4Stack=true" />
+				<jvmarg value="-Dliferay.mode=test" />
+				<jvmarg value="-Dsdk.dir=${sdk.dir}" />
+				<jvmarg value="-Dtest.class.group.index=${test.class.group.index}" />
+				<jvmarg value="-Dtest.class.groups=${TEST_CLASS_GROUPS}" />
+				<jvmarg value="-Duser.timezone=GMT" />
+				<classpath location="@{module.dir}/test-coverage/@{test.type}" />
+				<classpath location="${sdk.dir}/dependencies/net.sourceforge.cobertura/lib/cobertura.jar" />
+				<classpath refid="test.classpath" />
+				<formatter type="brief" usefile="false" />
+				<formatter type="xml" />
+				<batchtest todir="@{module.dir}/test-results/@{test.type}">
+					<fileset dir="@{module.dir}/test-classes/@{test.type}" includes="@{test.class}">
+						<filename regex="${junit.test.excludes}" negate="true" />
+					</fileset>
+				</batchtest>
+			</junit>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="loop-macrodef-or-target">
 		<attribute name="module.dirs" />
 		<attribute name="target.name" />
@@ -2617,6 +2656,46 @@ Please find a solution that does not require portal-impl.jar.
 		</sequential>
 	</macrodef>
 
+	<macrodef name="set-test-type">
+		<attribute name="module.dir" />
+		<attribute name="test.class" />
+
+		<sequential>
+			<if>
+				<available file="@{module.dir}/test/integration" type="dir" />
+				<then>
+					<resourcecount property="test.integration.count">
+						<fileset dir="@{module.dir}/test/integration" includes="**/@{test.class}.java" />
+					</resourcecount>
+				</then>
+			</if>
+
+			<if>
+				<available file="@{module.dir}/test/unit" type="dir" />
+				<then>
+					<resourcecount property="test.unit.count">
+						<fileset dir="@{module.dir}/test/unit" includes="**/@{test.class}.java" />
+					</resourcecount>
+				</then>
+			</if>
+
+			<if>
+				<equals arg1="${test.integration.count}" arg2="1" />
+				<then>
+					<var name="test.type" value="integration" />
+
+					<setup-arquillian module.dir="@{module.dir}" />
+				</then>
+				<elseif>
+					<equals arg1="${test.unit.count}" arg2="1" />
+					<then>
+						<var name="test.type" value="unit" />
+					</then>
+				</elseif>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="setup-arquillian">
 		<attribute name="module.dir" />
 
@@ -2654,6 +2733,47 @@ Please find a solution that does not require portal-impl.jar.
 			</if>
 		</sequential>
 	</macrodef>
+
+	<macrodef name="setup-test-classpath">
+		<attribute name="module.dir" />
+		<attribute name="test.type" />
+
+		<sequential>
+			<ivy:settings file="${ivy.custom.settings.file}" />
+
+			<ivy:resolve
+				conf="test"
+				file="${sdk.dir}/ivy.xml"
+				log="${ivy.log.level}"
+				transitive="${ivy.resolve.transitive.dependencies.test}"
+			/>
+
+			<if>
+				<available file="@{module.dir}/ivy.xml" />
+				<then>
+					<ivy:resolve
+						conf="test"
+						file="@{module.dir}/ivy.xml"
+						log="${ivy.log.level}"
+						transitive="${ivy.resolve.transitive.dependencies.test}"
+					/>
+				</then>
+			</if>
+
+			<path id="plugin-test-type.classpath">
+				<pathelement location="@{module.dir}/test-classes/@{test.type}" />
+
+				<!-- SDK dependencies -->
+
+				<ivy:resources module="com.liferay.sdk" type="bundle,jar,orbit" />
+
+				<!-- Module dependencies -->
+
+				<ivy:resources type="bundle,jar,orbit" />
+			</path>
+		</sequential>
+	</macrodef>
+
 
 	<macrodef name="start-test-app-server">
 		<attribute name="module.dir" />
@@ -2744,55 +2864,26 @@ Please find a solution that does not require portal-impl.jar.
 				module.dir="@{module.dir}"
 			/>
 
-			<if>
-				<available file="@{module.dir}/test/integration" type="dir" />
-				<then>
-					<resourcecount property="test.integration.count">
-						<fileset dir="@{module.dir}/test/integration" includes="**/@{test.class}.java" />
-					</resourcecount>
-				</then>
-			</if>
+			<set-test-type
+				module.dir="@{module.dir}"
+				test.class="@{test.class}"
+			/>
 
 			<if>
-				<available file="@{module.dir}/test/unit" type="dir" />
+				<not>
+					<isset property="test.class" />
+				</not>
 				<then>
-					<resourcecount property="test.unit.count">
-						<fileset dir="@{module.dir}/test/unit" includes="**/@{test.class}.java" />
-					</resourcecount>
-				</then>
-			</if>
-
-			<if>
-				<equals arg1="${test.integration.count}" arg2="1" />
-				<then>
-					<var name="test.type" value="integration" />
-
-					<setup-arquillian module.dir="@{module.dir}" />
+					<fail>Use "ant test-class -Dtest.class=StringUtilTest".</fail>
 				</then>
 				<elseif>
-					<equals arg1="${test.unit.count}" arg2="1" />
+					<not>
+						<isset property="test.type" />
+					</not>
 					<then>
-						<var name="test.type" value="unit" />
+						<fail>Test class ${test.class} cannot be found.</fail>
 					</then>
 				</elseif>
-				<else>
-					<if>
-						<not>
-							<isset property="test.class" />
-						</not>
-						<then>
-							<fail>Use "ant test-class -Dtest.class=StringUtilTest".</fail>
-						</then>
-						<elseif>
-							<not>
-								<isset property="test.type" />
-							</not>
-							<then>
-								<fail>Test class ${test.class} cannot be found.</fail>
-							</then>
-						</elseif>
-					</if>
-				</else>
 			</if>
 
 			<delete dir="@{module.dir}/coverage-reports/@{test.type}" />
@@ -2831,7 +2922,7 @@ Please find a solution that does not require portal-impl.jar.
 			/>
 
 			<if>
-				<available file="@{module.dir}/test/@{test.type}" />
+				<available file="@{module.dir}/test/@{test.type}" type="dir" />
 				<then>
 					<if>
 						<equals arg1="@{test.type}" arg2="integration" />
@@ -2843,68 +2934,12 @@ Please find a solution that does not require portal-impl.jar.
 						</then>
 					</if>
 
-					<if>
-						<available file="@{module.dir}/test/@{test.type}" type="dir" />
-						<then>
-							<local name="junit.java.gc" />
-
-							<if>
-								<equals arg1="@{test.type}" arg2="unit" />
-								<then>
-									<if>
-										<equals arg1="${junit.java.unit.gc.logging}" arg2="on" />
-										<then>
-											<property name="junit.java.gc" value="${junit.java.unit.gc} -verbose:gc -XX:+PrintGCCause -XX:+PrintGCDetails" />
-										</then>
-										<else>
-											<property name="junit.java.gc" value="${junit.java.unit.gc}" />
-										</else>
-									</if>
-								</then>
-								<else>
-									<local name="project.dir.name" />
-
-									<basename property="module.dir.name" file="@{module.dir}" />
-
-									<property name="junit.java.gc" value="${junit.java.integration.gc} -verbose:gc -Xloggc:/tmp/${module.dir.name}-@{test.type}-gc.log -XX:+PrintGCCause -XX:+PrintGCDetails" />
-								</else>
-							</if>
-
-							<instrument-code
-								module.dir="@{module.dir}"
-								test.type="@{test.type}"
-							/>
-
-							<junit dir="@{module.dir}" fork="on" forkmode="@{junit.forkmode}" jvm="${junit.jvm}" outputtoformatters="false" printsummary="on" showoutput="true">
-								<sysproperty key="app.server.tomcat.dir" value="${app.server.tomcat.dir}" />
-								<sysproperty key="net.sourceforge.cobertura.datafile" file="@{module.dir}/test-coverage/@{test.type}/cobertura.ser" />
-								<sysproperty key="whip.agent" file="${whip.agent}" />
-								<sysproperty key="whip.datafile" file="@{module.dir}/test-coverage/whip.dat" />
-								<sysproperty key="whip.instrument.dump" value="${whip.instrument.dump}" />
-								<jvmarg line="${junit.debug.jpda}" />
-								<jvmarg line="${junit.java.gc}" />
-								<jvmarg line="${whip.agent}" />
-								<jvmarg value="-Dexternal-properties=${test.properties}" />
-								<jvmarg value="-Dfile.encoding=UTF-8" />
-								<jvmarg value="-Djava.net.preferIPv4Stack=true" />
-								<jvmarg value="-Dliferay.mode=test" />
-								<jvmarg value="-Dsdk.dir=${sdk.dir}" />
-								<jvmarg value="-Dtest.class.group.index=${test.class.group.index}" />
-								<jvmarg value="-Dtest.class.groups=${TEST_CLASS_GROUPS}" />
-								<jvmarg value="-Duser.timezone=GMT" />
-								<classpath location="@{module.dir}/test-coverage/@{test.type}" />
-								<classpath location="${sdk.dir}/dependencies/net.sourceforge.cobertura/lib/cobertura.jar" />
-								<classpath refid="test.classpath" />
-								<formatter type="brief" usefile="false" />
-								<formatter type="xml" />
-								<batchtest todir="@{module.dir}/test-results/@{test.type}">
-									<fileset dir="@{module.dir}/test-classes/@{test.type}" includes="@{test.class}">
-										<filename regex="${junit.test.excludes}" negate="true" />
-									</fileset>
-								</batchtest>
-							</junit>
-						</then>
-					</if>
+					<junit-cmd
+						junit.forkmode="@{junit.forkmode}"
+						module.dir="@{module.dir}"
+						test.class="@{test.class}"
+						test.type="@{test.type}"
+					/>
 				</then>
 			</if>
 		</sequential>
