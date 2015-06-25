@@ -2740,6 +2740,10 @@ Please find a solution that does not require portal-impl.jar.
 		<attribute name="test.class" />
 
 		<sequential>
+			<compile
+				module.dir="@{module.dir}"
+			/>
+
 			<if>
 				<available file="@{module.dir}/test/integration" type="dir" />
 				<then>
@@ -2791,11 +2795,26 @@ Please find a solution that does not require portal-impl.jar.
 				</else>
 			</if>
 
+			<delete dir="@{module.dir}/coverage-reports/@{test.type}" />
+			<delete dir="@{module.dir}/test-classes/@{test.type}" />
+			<delete dir="@{module.dir}/test-coverage/@{test.type}" />
+			<delete dir="@{module.dir}/test-results/@{test.type}" />
+
+			<compile-test-cmd
+				module.dir="@{module.dir}"
+				test.type="${test.type}"
+			/>
+
 			<test-cmd
 				junit.forkmode="once"
 				module.dir="@{module.dir}"
 				test.class="**/${test.class}.class"
 				test.type="${test.type}"
+			/>
+
+			<report-coverage
+				module.dir="@{module.dir}"
+				test.type="@{test.type}"
 			/>
 		</sequential>
 	</macrodef>
@@ -2814,20 +2833,6 @@ Please find a solution that does not require portal-impl.jar.
 			<if>
 				<available file="@{module.dir}/test/@{test.type}" />
 				<then>
-					<delete dir="@{module.dir}/coverage-reports/@{test.type}" />
-					<delete dir="@{module.dir}/test-classes/@{test.type}" />
-					<delete dir="@{module.dir}/test-coverage/@{test.type}" />
-					<delete dir="@{module.dir}/test-results/@{test.type}" />
-
-					<compile
-						module.dir="@{module.dir}"
-					/>
-
-					<compile-test-cmd
-						module.dir="@{module.dir}"
-						test.type="@{test.type}"
-					/>
-
 					<if>
 						<equals arg1="@{test.type}" arg2="integration" />
 						<then>
@@ -2898,11 +2903,6 @@ Please find a solution that does not require portal-impl.jar.
 									</fileset>
 								</batchtest>
 							</junit>
-
-							<report-coverage
-								module.dir="@{module.dir}"
-								test.type="@{test.type}"
-							/>
 						</then>
 					</if>
 				</then>
