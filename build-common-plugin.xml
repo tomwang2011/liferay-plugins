@@ -879,6 +879,20 @@ Include-Resource: WEB-INF/=server-config.wsdd,classes;filter:=*.wsdd
 
 				<propertycopy from="TEST_CLASS_GROUP_${test.class.group.index}" name="test.classes" />
 
+				<compile
+					module.dir="${basedir}"
+				/>
+
+				<compile-test-cmd
+					module.dir="${basedir}"
+					test.type="unit"
+				/>
+
+				<compile-test-cmd
+					module.dir="${basedir}"
+					test.type="integration"
+				/>
+
 				<test-cmd
 					module.dir="${basedir}"
 					junit.forkmode="perTest"
@@ -890,6 +904,16 @@ Include-Resource: WEB-INF/=server-config.wsdd,classes;filter:=*.wsdd
 					module.dir="${basedir}"
 					junit.forkmode="once"
 					test.class="${test.classes}"
+					test.type="integration"
+				/>
+
+				<report-coverage
+					module.dir="${basedir}"
+					test.type="unit"
+				/>
+
+				<report-coverage
+					module.dir="${basedir}"
 					test.type="integration"
 				/>
 			</then>
@@ -921,6 +945,20 @@ Include-Resource: WEB-INF/=server-config.wsdd,classes;filter:=*.wsdd
 			replace="/"
 		/>
 
+		<compile
+			module.dir="${basedir}"
+		/>
+
+		<compile-test-cmd
+			module.dir="${basedir}"
+			test.type="unit"
+		/>
+
+		<compile-test-cmd
+			module.dir="${basedir}"
+			test.type="integration"
+		/>
+
 		<test-cmd
 			module.dir="${basedir}"
 			junit.forkmode="once"
@@ -933,6 +971,16 @@ Include-Resource: WEB-INF/=server-config.wsdd,classes;filter:=*.wsdd
 			junit.forkmode="perTest"
 			test.class="**/${test.package.dir}/*Test.class"
 			test.type="unit"
+		/>
+
+		<report-coverage
+			module.dir="${basedir}"
+			test.type="unit"
+		/>
+
+		<report-coverage
+			module.dir="${basedir}"
+			test.type="integration"
 		/>
 	</target>
 

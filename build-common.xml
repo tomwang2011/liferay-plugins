@@ -2914,12 +2914,26 @@ Please find a solution that does not require portal-impl.jar.
 		<attribute name="module.dir" />
 
 		<sequential>
+			<compile
+				module.dir="@{module.dir}"
+			/>
+
 			<setup-arquillian module.dir="@{module.dir}" />
+
+			<compile-test-cmd
+				module.dir="@{module.dir}"
+				test.type="integration"
+			/>
 
 			<test-cmd
 				junit.forkmode="once"
 				module.dir="@{module.dir}"
 				test.class="**/*Test.class"
+				test.type="integration"
+			/>
+
+			<report-coverage
+				module.dir="@{module.dir}"
 				test.type="integration"
 			/>
 		</sequential>
@@ -2929,10 +2943,24 @@ Please find a solution that does not require portal-impl.jar.
 		<attribute name="module.dir" />
 
 		<sequential>
+			<compile
+				module.dir="@{module.dir}"
+			/>
+
+			<compile-test-cmd
+				module.dir="@{module.dir}"
+				test.type="unit"
+			/>
+
 			<test-cmd
 				junit.forkmode="perTest"
 				module.dir="@{module.dir}"
 				test.class="**/*Test.class"
+				test.type="unit"
+			/>
+
+			<report-coverage
+				module.dir="@{module.dir}"
 				test.type="unit"
 			/>
 		</sequential>
