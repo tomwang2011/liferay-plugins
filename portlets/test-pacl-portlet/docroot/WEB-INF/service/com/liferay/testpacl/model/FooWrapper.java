@@ -174,7 +174,7 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _foo.getExpandoBridge();
 	}
 
@@ -371,7 +371,7 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_foo.setExpandoBridgeAttributes(expandoBridge);
 	}
 

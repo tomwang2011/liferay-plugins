@@ -583,9 +583,9 @@ public class TasksEntryClp extends BaseModelImpl<TasksEntry>
 	}
 
 	@Override
-	public java.lang.String getPriorityLabel() {
+	public java.lang.String getStatusLabel() {
 		try {
-			String methodName = "getPriorityLabel";
+			String methodName = "getStatusLabel";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -602,9 +602,9 @@ public class TasksEntryClp extends BaseModelImpl<TasksEntry>
 	}
 
 	@Override
-	public java.lang.String getStatusLabel() {
+	public java.lang.String getPriorityLabel() {
 		try {
-			String methodName = "getStatusLabel";
+			String methodName = "getPriorityLabel";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 

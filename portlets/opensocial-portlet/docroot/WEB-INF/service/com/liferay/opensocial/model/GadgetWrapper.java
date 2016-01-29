@@ -156,7 +156,7 @@ public class GadgetWrapper implements Gadget, ModelWrapper<Gadget> {
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _gadget.getExpandoBridge();
 	}
 
@@ -303,7 +303,7 @@ public class GadgetWrapper implements Gadget, ModelWrapper<Gadget> {
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_gadget.setExpandoBridgeAttributes(expandoBridge);
 	}
 

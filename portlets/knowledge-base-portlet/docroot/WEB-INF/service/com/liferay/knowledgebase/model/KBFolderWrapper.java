@@ -198,7 +198,7 @@ public class KBFolderWrapper implements KBFolder, ModelWrapper<KBFolder> {
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _kbFolder.getExpandoBridge();
 	}
 
@@ -407,7 +407,7 @@ public class KBFolderWrapper implements KBFolder, ModelWrapper<KBFolder> {
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_kbFolder.setExpandoBridgeAttributes(expandoBridge);
 	}
 

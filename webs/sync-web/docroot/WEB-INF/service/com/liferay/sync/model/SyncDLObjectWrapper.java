@@ -326,7 +326,7 @@ public class SyncDLObjectWrapper implements SyncDLObject,
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _syncDLObject.getExpandoBridge();
 	}
 
@@ -678,7 +678,7 @@ public class SyncDLObjectWrapper implements SyncDLObject,
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_syncDLObject.setExpandoBridgeAttributes(expandoBridge);
 	}
 

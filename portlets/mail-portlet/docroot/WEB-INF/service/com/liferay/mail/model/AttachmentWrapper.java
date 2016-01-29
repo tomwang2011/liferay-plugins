@@ -172,7 +172,7 @@ public class AttachmentWrapper implements Attachment, ModelWrapper<Attachment> {
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _attachment.getExpandoBridge();
 	}
 
@@ -329,7 +329,7 @@ public class AttachmentWrapper implements Attachment, ModelWrapper<Attachment> {
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_attachment.setExpandoBridgeAttributes(expandoBridge);
 	}
 

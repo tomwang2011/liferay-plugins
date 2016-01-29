@@ -93,7 +93,7 @@ public class BarWrapper implements Bar, ModelWrapper<Bar> {
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _bar.getExpandoBridge();
 	}
 
@@ -170,7 +170,7 @@ public class BarWrapper implements Bar, ModelWrapper<Bar> {
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_bar.setExpandoBridgeAttributes(expandoBridge);
 	}
 

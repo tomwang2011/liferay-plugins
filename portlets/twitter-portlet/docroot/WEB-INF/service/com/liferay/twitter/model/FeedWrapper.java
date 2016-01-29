@@ -153,7 +153,7 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _feed.getExpandoBridge();
 	}
 
@@ -320,7 +320,7 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_feed.setExpandoBridgeAttributes(expandoBridge);
 	}
 

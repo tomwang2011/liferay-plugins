@@ -103,7 +103,7 @@ public class TestBlobEntryWrapper implements TestBlobEntry,
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _testBlobEntry.getExpandoBridge();
 	}
 
@@ -190,7 +190,7 @@ public class TestBlobEntryWrapper implements TestBlobEntry,
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_testBlobEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 

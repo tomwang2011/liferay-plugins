@@ -91,7 +91,7 @@ public class JIRAProjectWrapper implements JIRAProject,
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _jiraProject.getExpandoBridge();
 	}
 
@@ -178,7 +178,7 @@ public class JIRAProjectWrapper implements JIRAProject,
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_jiraProject.setExpandoBridgeAttributes(expandoBridge);
 	}
 

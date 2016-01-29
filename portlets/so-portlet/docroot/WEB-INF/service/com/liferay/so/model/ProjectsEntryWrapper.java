@@ -198,7 +198,7 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _projectsEntry.getExpandoBridge();
 	}
 
@@ -375,7 +375,7 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_projectsEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 

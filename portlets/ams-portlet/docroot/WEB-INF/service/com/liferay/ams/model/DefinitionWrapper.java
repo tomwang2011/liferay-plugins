@@ -191,7 +191,7 @@ public class DefinitionWrapper implements Definition, ModelWrapper<Definition> {
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+	public com.liferay.expando.kernel.model.ExpandoBridge getExpandoBridge() {
 		return _definition.getExpandoBridge();
 	}
 
@@ -388,7 +388,7 @@ public class DefinitionWrapper implements Definition, ModelWrapper<Definition> {
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		com.liferay.expando.kernel.model.ExpandoBridge expandoBridge) {
 		_definition.setExpandoBridgeAttributes(expandoBridge);
 	}
 
