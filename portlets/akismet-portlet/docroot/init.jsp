@@ -28,6 +28,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 page import="com.liferay.akismet.util.AkismetUtil" %><%@
 page import="com.liferay.akismet.util.PortletPropsKeys" %><%@
 page import="com.liferay.akismet.util.PrefsPortletPropsUtil" %><%@
+page import="com.liferay.expando.kernel.model.ExpandoBridge" %><%@
 page import="com.liferay.portal.kernel.dao.search.RowChecker" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
@@ -41,7 +42,6 @@ page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.util.PortalUtil" %><%@
-page import="com.liferay.portlet.expando.model.ExpandoBridge" %><%@
 page import="com.liferay.portlet.messageboards.exception.NoSuchMessageException" %><%@
 page import="com.liferay.portlet.messageboards.exception.RequiredMessageException" %><%@
 page import="com.liferay.portlet.messageboards.model.MBMessage" %><%@
