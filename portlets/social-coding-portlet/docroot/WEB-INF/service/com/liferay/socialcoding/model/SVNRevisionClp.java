@@ -271,6 +271,25 @@ public class SVNRevisionClp extends BaseModelImpl<SVNRevision>
 	}
 
 	@Override
+	public com.liferay.socialcoding.model.SVNRepository getSVNRepository() {
+		try {
+			String methodName = "getSVNRepository";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			com.liferay.socialcoding.model.SVNRepository returnObj = (com.liferay.socialcoding.model.SVNRepository)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public java.lang.Object[] getJIRAIssueAndComments() {
 		try {
 			String methodName = "getJIRAIssueAndComments";
@@ -299,25 +318,6 @@ public class SVNRevisionClp extends BaseModelImpl<SVNRevision>
 			Object[] parameterValues = new Object[] {  };
 
 			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public com.liferay.socialcoding.model.SVNRepository getSVNRepository() {
-		try {
-			String methodName = "getSVNRepository";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			com.liferay.socialcoding.model.SVNRepository returnObj = (com.liferay.socialcoding.model.SVNRepository)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
