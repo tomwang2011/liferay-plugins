@@ -176,6 +176,24 @@ public class KBArticleServiceSoap {
 		}
 	}
 
+	public static java.lang.String getGroupKBArticlesRSS(int status,
+		int rssDelta, java.lang.String rssDisplayStyle,
+		java.lang.String rssFormat,
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
+		throws RemoteException {
+		try {
+			java.lang.String returnValue = KBArticleServiceUtil.getGroupKBArticlesRSS(status,
+					rssDelta, rssDisplayStyle, rssFormat, themeDisplay);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.knowledgebase.model.KBArticleSoap getKBArticle(
 		long resourcePrimKey, int version) throws RemoteException {
 		try {
@@ -225,6 +243,24 @@ public class KBArticleServiceSoap {
 					resourcePrimKey, status, orderByComparator);
 
 			return com.liferay.knowledgebase.model.KBArticleSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static java.lang.String getKBArticleRSS(long resourcePrimKey,
+		int status, int rssDelta, java.lang.String rssDisplayStyle,
+		java.lang.String rssFormat,
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
+		throws RemoteException {
+		try {
+			java.lang.String returnValue = KBArticleServiceUtil.getKBArticleRSS(resourcePrimKey,
+					status, rssDelta, rssDisplayStyle, rssFormat, themeDisplay);
+
+			return returnValue;
 		}
 		catch (Exception e) {
 			_log.error(e, e);

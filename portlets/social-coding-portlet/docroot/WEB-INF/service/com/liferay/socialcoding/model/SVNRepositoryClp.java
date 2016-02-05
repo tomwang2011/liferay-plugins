@@ -180,9 +180,9 @@ public class SVNRepositoryClp extends BaseModelImpl<SVNRepository>
 	}
 
 	@Override
-	public java.lang.String getName() {
+	public java.lang.String getShortURL() {
 		try {
-			String methodName = "getName";
+			String methodName = "getShortURL";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -199,9 +199,9 @@ public class SVNRepositoryClp extends BaseModelImpl<SVNRepository>
 	}
 
 	@Override
-	public java.lang.String getShortURL() {
+	public java.lang.String getName() {
 		try {
-			String methodName = "getShortURL";
+			String methodName = "getName";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 

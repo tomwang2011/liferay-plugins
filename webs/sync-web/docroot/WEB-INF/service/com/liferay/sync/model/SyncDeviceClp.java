@@ -444,9 +444,9 @@ public class SyncDeviceClp extends BaseModelImpl<SyncDevice>
 	}
 
 	@Override
-	public boolean isSupported() {
+	public boolean hasSetModifiedDate() {
 		try {
-			String methodName = "isSupported";
+			String methodName = "hasSetModifiedDate";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -463,9 +463,9 @@ public class SyncDeviceClp extends BaseModelImpl<SyncDevice>
 	}
 
 	@Override
-	public boolean hasSetModifiedDate() {
+	public boolean isSupported() {
 		try {
-			String methodName = "hasSetModifiedDate";
+			String methodName = "isSupported";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
